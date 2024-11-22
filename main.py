@@ -1,6 +1,6 @@
 from models import D, FREQUENCIES, Ava, Notes, Dastgah
 import numpy as np
-
+from helpers import deb_pr
 
 class Lilyize:
     def __init__(self, rytheme: list[Ava], ) -> None:
@@ -65,10 +65,13 @@ class S:
 
     def get_melody(self) -> list[Ava]:
         c = Composer()
+        melody = []
         n = self.first_note(self.dastgah.init_weights)
-        for i in range(len(self.get_rytheme())):
+        for r in self.get_rytheme():
             n = c.progres(n)
-        return n
+            melody.append({'note': n[-1], 'duration':r})
+        return melody
+
 
 
     def weights_normalizer(self, weights: list[float]) -> list[float]:

@@ -63,13 +63,17 @@ class Dastgah:
         match self.name:
             case 'Shur':
                 return [10,20,10,15,10,5,1]
-        
+            case 'Mahur':
+                return [40,5,20,1,20,10,0]
     
 
 
 class Ava(Enum):
-    S = 1 # ta -> short
-    L = 2 # tan -> long
+    S = 2 # ta -> short
+    L = 3 # tan -> long
+    XL = 4 # tan -> long
+
+
 
 
 FREQUENCIES = {
