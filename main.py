@@ -1,9 +1,10 @@
 from models import D, FREQUENCIES, Ava, Notes, Dastgah
 import numpy as np
 from helpers import deb_pr
+from ganjoor_interface import GanjoorAPI
 
 class Lilyize:
-    def __init__(self, rytheme: list[Ava], ) -> None:
+    def __init__(self, rhythm: list[Ava], ) -> None:
         pass
 
 class Composer:
@@ -37,9 +38,13 @@ class Composer:
 
 class S:
     def __init__(self, dastgah: str) -> None:
-        self.arouz: str = "مفعول و مفاعیل و مفاعیل و فعل"
         self.dastgah: Dastgah = Dastgah(dastgah) # shur D
-        self.rytheme: str = r"//%/%/%" # -> should be enum
+        self.poem = GanjoorAPI().get_poem()
+        self.arouz: str = self.poem['rhythm']['arouz']
+        self.rhythm: str = self.poem['rhythm']['r']
+        print(f"Poem: {self.poem.get('firstBeyt')}")
+        print(f"Rhythm: {self.poem.get('notation')}")
+        print(f"Musical Weight: {self.length}/8")
 
     @staticmethod
     def _translate(k: str) -> list[Ava]:
@@ -48,8 +53,8 @@ class S:
         if k == '%': return [Ava.S, Ava.S, Ava.L]
         
 
-    def get_rytheme(self) -> list[Ava]:
-        return sum([self._translate(s) for s in self.rytheme], [])
+    def get_rhythm(self) -> list[Ava]:
+        return sum([self._translate(s) for s in self.rhythm], [])
         
     @staticmethod
     def duration(s: str):
@@ -60,14 +65,14 @@ class S:
 
     @property
     def length(self) -> int:
-        return sum([self.duration(s)  for s in self.rytheme])
+        return sum([self.duration(s)  for s in self.rhythm])
 
 
     def get_melody(self) -> list[Ava]:
         c = Composer()
         melody = []
         n = self.first_note(self.dastgah.init_weights)
-        for r in self.get_rytheme():
+        for r in self.get_rhythm():
             n = c.progres(n)
             melody.append({'note': n[-1], 'duration':r})
         return melody
@@ -89,5 +94,5 @@ class S:
 
 
 if __name__ == "__main__":
-    print(S().get_rytheme())
+    print(S().get_rhythm())
 

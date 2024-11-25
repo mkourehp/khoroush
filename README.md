@@ -1,2 +1,3 @@
 TODO:
-  - Complete Dastgahs and add more realisting progression methods  
+  - Complete Dastgahs
+  - Add more realisting progression methods
