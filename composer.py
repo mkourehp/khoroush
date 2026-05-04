@@ -1,7 +1,7 @@
 import numpy as np
 from models import FREQUENCIES, Notes, Dastgah, Ava
 from ganjoor_interface import GanjoorAPI
-
+from helpers import deb_pr, farsi
 
 class Composer:
     # This is a very basic implementation of a composer.
@@ -40,14 +40,18 @@ class Composer:
 
 
 class Song:
-    def __init__(self, dastgah: str) -> None:
+    def __init__(self, dastgah: str, tempo: int=60) -> None:
         self.dastgah: Dastgah = Dastgah(dastgah) # shur D
         self.poem = GanjoorAPI().get_poem()
         self.arouz: str = self.poem['rhythm']['arouz']
         self.rhythm: str = self.poem['rhythm']['r']
-        print(f"Poem: {self.poem.get('firstBeyt')}")
-        print(f"Arouz: {self.poem.get('notation')}")
-        print(f"Rhythm: {self.length + 1}/16")
+        self.title = " ".join(self.poem['firstBeyt'].split()[::-1])
+        self.tempo: float = tempo
+        self.musical_rythem: float = self.length + 2
+        print(f"Poem: {farsi(self.poem['firstBeyt'])}")
+        print(f"Arouz: {farsi(self.poem.get('notation'))}")
+        print(f"Rhythm: {self.musical_rythem}/16")
+
 
     @staticmethod
     def _translate(k: str) -> list[Ava]:
@@ -58,7 +62,8 @@ class Song:
 
     def get_rhythm(self) -> list[Ava]:
         return sum([self._translate(s) for s in self.rhythm], [])
-        
+
+
     @staticmethod
     def duration(s: str):
         if s=="/": return 2
@@ -79,7 +84,6 @@ class Song:
             n = c.progres(n)
             melody.append({'note': n[-1], 'duration':r})
         return melody
-
 
 
     def first_note(self, weights: list[float]) -> str:

@@ -39,19 +39,22 @@ class Audio:
         wavio.write("sample.wav", audio, self.RATE, sampwidth=3)
 
 
-    def lilylize(self, piece: str, rythem: int):
+    def lilylize(self, piece: str, rythem: int, dastgah: str, tempo: int, title: str):
+        # add tempo, dastgah, and other necessary information to the piece
+        header = f"\\header {{title = \\markup {{ \\bold {{ {title} }} }}}} \n"
         pre_lily = '\\version "2.24.3"\n\\include "persian.ly"\n'
         lily = 'piece = \\relative {\n\\autoBeamOff\n'
         lily += f'\\time {rythem}/16\n'  
+        lily += f'\\tempo 8 = {tempo}\n'
         lily += piece[0]+"'"+piece[1:] + '\n}\n'
         post_lily = '\\score { \\piece }'
         with open("score.ly", "w") as f:
-            f.write(pre_lily + lily + post_lily)
+            f.write(header + pre_lily + lily + post_lily)
 
 
 
-    def write_note(self, note_array: list[dict], rythem: int):
+    def write_note(self, note_array: list[dict], rythem: int, dastgah: str, tempo: int, title: str):
         piece = " ".join([f"{str(n['note'])}{n['duration'].name}" for n in  note_array]).replace("L", "16.").replace("S", "16")
-        self.lilylize(piece, rythem)
+        self.lilylize(piece, rythem, dastgah, tempo, title)
         os.system("docker run -v $(pwd):/workdir -w /workdir codello/lilypond score.ly")
 

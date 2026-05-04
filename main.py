@@ -6,4 +6,7 @@ if __name__ == "__main__":
   m = song.get_melody()
   audio = Audio(m)
   audio.get_sound(m)
-  audio.write_note(m, song.length)
+  audio.write_note(m, song.musical_rythem, 
+                   dastgah=song.dastgah.name, 
+                   tempo=song.tempo,
+                   title=song.title)
