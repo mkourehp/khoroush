@@ -1,3 +1,1 @@
-TODO:
-  - Complete Dastgahs
-  - Add more realisting progression methods
+Khoroush is an algorithmic Persian music composer. It generates melodies for Persian classical music (based on the Dastgah system) using the rhythmic patterns (Arouz/عروض) of Persian poetry fetched from Ganjoor.
