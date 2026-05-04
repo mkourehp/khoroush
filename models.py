@@ -1,6 +1,7 @@
 from typing import Union
 import matplotlib.pyplot as plt
 from enum import Enum
+import numpy as np
 
 class NOTE(Enum):
     C = 0
@@ -43,7 +44,7 @@ class Notes:
         ax.set_yticks(range(len(Notes.n)), Notes.n)
         return fig, ax
                 
-        
+
 
 class D(Enum):
     Shur = 1
@@ -60,11 +61,23 @@ class Dastgah:
  
     @property
     def init_weights(self) -> list[float]:
+        # This is a placeholder. In a real implementation, 
+        # these weights would be based 
+        # on the characteristics of each Dastgah.
         match self.name:
             case 'Shur':
-                return [10,20,10,15,10,5,1]
+                weights = [1,1,1,1,1,1,1]
             case 'Mahur':
-                return [40,5,20,1,20,10,0]
+                weights = [1,1,1,1,1,1,1]
+            case 'Segah':
+                weights = [1,1,1,1,1,1,1]
+            case 'Nava':
+                weights = [1,1,1,1,1,1,1]
+            case 'RastPanjgha':
+                weights = [1,1,1,1,1,1,1]
+            case 'Homayoun':
+                weights = [1,1,1,1,1,1,1]
+        return weights / np.sum(weights)
     
 
 
